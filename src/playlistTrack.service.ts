@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { PlaylistTrack } from '@prisma/client';
 
@@ -10,15 +10,25 @@ export class PlaylistTrackService {
     playlistTitle: string,
     trackTitle: string,
   ): Promise<PlaylistTrack | null> {
-    return this.prisma.playlistTrack.findFirst({
-      where: {
-        playlist: {
-          name: playlistTitle,
+    try {
+      const playlistTrack = await this.prisma.playlistTrack.findFirst({
+        where: {
+          playlist: {
+            name: playlistTitle,
+          },
+          track: {
+            name: trackTitle,
+          },
         },
-        track: {
-          name: trackTitle,
-        },
-      },
-    });
+      });
+
+      if (!playlistTrack) {
+        throw new NotFoundException('Playlist track not found');
+      }
+
+      return playlistTrack;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
