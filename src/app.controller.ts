@@ -33,9 +33,7 @@ export class AppController {
   }
 
   @Get('get-playlist-track-count/:name')
-  async getPlaylistTrackCount(
-    @Param('name') name: string,
-  ): Promise<PlaylistModel> {
+  async getPlaylistTrackCount(@Param('name') name: string): Promise<number> {
     return this.playlistService.playlist(name);
   }
 }

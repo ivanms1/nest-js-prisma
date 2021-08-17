@@ -6,19 +6,13 @@ import { Playlist, Prisma } from '@prisma/client';
 export class PlaylistService {
   constructor(private prisma: PrismaService) {}
 
-  async playlist(name: string): Promise<Playlist | null> {
-    return this.prisma.playlist.findFirst({
+  async playlist(name: string): Promise<number | null> {
+    const playlist = await this.prisma.playlist.findFirst({
       where: {
         name,
       },
-      include: {
-        _count: {
-          select: {
-            tracks: true,
-          },
-        },
-      },
     });
+    return playlist.tracksCount;
   }
 
   async createPlaylist(data: Prisma.PlaylistCreateInput): Promise<Playlist> {
