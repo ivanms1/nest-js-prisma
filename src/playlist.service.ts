@@ -1,7 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { Playlist, Prisma } from '@prisma/client';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class PlaylistService {
